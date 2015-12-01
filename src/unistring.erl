@@ -1,22 +1,28 @@
 -module(unistring).
 -export([to_upper/1, to_lower/1, to_title/1]).
 
+characters_to_list(S) ->
+	case unicode:characters_to_list(S) of
+		{error, L0, _FailedChars} -> L0;
+		L1 -> L1
+	end.
+
 to_upper(S) when is_binary(S) ->
-	unicode:characters_to_binary(to_upper(unicode:characters_to_list(S)));
+	unicode:characters_to_binary(to_upper(characters_to_list(S)));
 to_upper(S) when is_list(S) ->
     [char_to_upper(C) || C <- S];
 to_upper(C) when is_integer(C) ->
     char_to_upper(C).
 
 to_lower(S) when is_binary(S) ->
-	unicode:characters_to_binary(to_lower(unicode:characters_to_list(S)));
+	unicode:characters_to_binary(to_lower(characters_to_list(S)));
 to_lower(S) when is_list(S) ->
     [char_to_lower(C) || C <- S];
 to_lower(C) when is_integer(C) ->
     char_to_lower(C).
 
 to_title(S) when is_binary(S) ->
-	unicode:characters_to_binary(to_title(unicode:characters_to_list(S)));
+	unicode:characters_to_binary(to_title(characters_to_list(S)));
 to_title(S) when is_list(S) ->
     [char_to_title(C) || C <- S];
 to_title(C) when is_integer(C) ->
