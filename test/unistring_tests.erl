@@ -43,7 +43,10 @@ generator_test_() ->
 	  {"polish to_upper", fun polish_to_upper/0},
 	  {"russian to_upper", fun russian_to_upper/0},
 	  {"thai to_upper", fun thai_to_upper/0},
-	  {"turkish to_upper", fun turkish_to_upper/0}]}.
+	  {"turkish to_upper", fun turkish_to_upper/0},
+	  {"invalid chars test#1", fun invalid_chars1/0},
+	  {"invalid chars test#2", fun invalid_chars2/0},
+	  {"invalid chars test#3", fun invalid_chars3/0}]}.
 
 simple_to_lower() ->
 	?assertEqual("test", unistring:to_lower("TEST")),
@@ -193,3 +196,15 @@ thai_to_upper() ->
 turkish_to_upper() ->
 	?assertEqual(<<"PIJAMALI HASTA, YAĞIZ ŞOFÖRE ÇABUCAK GÜVENDI."/utf8>>,
 		unistring:to_upper(<<"Pijamalı hasta, yağız şoföre çabucak güvendi."/utf8>>)).
+
+invalid_chars1() ->
+	?assertEqual(<<0,0>>,
+		unistring:to_lower(<<0,0,189>>)).
+
+invalid_chars2() ->
+	?assertEqual(<<0,0,1>>,
+		unistring:to_lower(<<0,0,1,189,0,1>>)).
+
+invalid_chars3() ->
+	?assertEqual(<<0,1,2,3,4>>,
+		unistring:to_lower(<<0,1,2,3,4,189,0,1>>)).
